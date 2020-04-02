@@ -1,26 +1,111 @@
-
 package ouhk.comps380f.controller;
 
+import java.security.Principal;
+import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
+import ouhk.comps380f.dao.PostRepository;
 import ouhk.comps380f.dao.ThreadRepository;
+import ouhk.comps380f.model.PostEntry;
+import ouhk.comps380f.model.ThreadEntry;
 
 @Controller
 @RequestMapping("/thread")
 public class ThreadController {
-    
+
     @Resource
     private ThreadRepository threadRepo;
-    
-    @GetMapping("/view/{type}")
-    public String view(@PathVariable(value="type") String type, ModelMap model){
-        model.addAttribute("threads",threadRepo.readEntriesByTYPE(type));
-        model.addAttribute("type",type);
-        return "viewThread";
+    @Resource
+    private PostRepository postRepo;
+
+    @GetMapping("/{type}")
+    public ModelAndView view(@PathVariable(value = "type") String type) {
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("viewThread");
+        mav.addObject("threads", threadRepo.readEntriesByTYPE(type));
+        mav.addObject("type", type);
+        mav.addObject("threadForm", new Form());
+        return mav;
     }
-    
+
+    public static class Form {
+
+        private String title;
+        private String content;
+
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
+        }
+
+        public String getContent() {
+            return content;
+        }
+
+        public void setContent(String content) {
+            this.content = content;
+        }
+
+    }
+
+    @PostMapping("/{type}")
+    public ModelAndView create(@PathVariable(value = "type") String type, Form form, Principal principal) {
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("viewThread");
+        String title = form.getTitle();
+        String content = form.getContent();
+
+        if (title.isEmpty() || content.isEmpty()) {
+            mav.addObject("errorMessage", "Error: empty title/content");
+            mav.addObject("threads", threadRepo.readEntriesByTYPE(type));
+            mav.addObject("type", type);
+            mav.addObject("threadForm", new Form());
+            return mav;
+        }
+
+        ThreadEntry thread = new ThreadEntry(type, title);
+        threadRepo.save(thread);
+        int threadId = (int) threadRepo.readEntriesByTYPE(type).get(threadRepo.readEntriesByTYPE(type).size() - 1).getTHREAD_ID();
+        PostEntry post = new PostEntry(principal.getName(), threadId, 0, content);
+        postRepo.save(post);
+
+        mav.addObject("threads", threadRepo.readEntriesByTYPE(type));
+        mav.addObject("type", type);
+        mav.addObject("threadForm", new Form());
+
+        return mav;
+    }
+
+    @GetMapping("/{type}/{threadId}")
+    public ModelAndView posts(@PathVariable(value = "type") String type, @PathVariable(value="threadId") int threadId) {
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("viewPosts");
+        mav.addObject("posts", postRepo.readEntriesByThreadId(threadId));
+        String title=threadRepo.findById(threadId).get().getTITLE();
+        mav.addObject("title", title);
+        mav.addObject("postForm", new PostForm());
+        return mav;
+    }
+    public static class PostForm {
+        private String content;
+
+        public String getContent() {
+            return content;
+        }
+
+        public void setContent(String content) {
+            this.content = content;
+        }
+        
+    }
 }

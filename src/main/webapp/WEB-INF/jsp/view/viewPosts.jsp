@@ -4,33 +4,32 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>${type}</title>
+        <title>${title}</title>
     </head>
     <body>
         <jsp:include page="header.jsp"></jsp:include>
-        <h1>Thread of ${type}</h1>
-        [THREAD_ID of the first thread: <c:out value="${threads[0].THREAD_ID}"/>]
-        <c:if test="${empty threads}">
-            empty
-        </c:if>
-        <ul>
-            <c:forEach var="thread" items="${threads}">
-                <li><a href="<c:url value="./${type}/${thread.THREAD_ID}" />">${thread.TITLE}</a></li>
+        <h1>${title}</h1>
+
+        <ol>
+            <c:forEach var="post" items="${posts}">
+                <li>${post.CONTENT}</li>
                 </c:forEach>
-        </ul>
+        </ol>
+
 
         <security:authorize access="isAuthenticated()">
             <br/>
 
             <p style="color:red;">${errorMessage}</p>
-            <form:form method="POST" modelAttribute="threadForm">
-                <form:label path="title">Title</form:label><br/>
-                <form:input type="text" path="title" /><br/><br/>
+            <form:form method="POST" modelAttribute="postForm">
                 <form:label path="content">Content</form:label><br/>
                 <form:textarea path="content" rows="5" cols="30" /><br/><br/>
                 <input type="submit" value="Submit"/>
             </form:form>
 
         </security:authorize>
+
+
+
     </body>
 </html>

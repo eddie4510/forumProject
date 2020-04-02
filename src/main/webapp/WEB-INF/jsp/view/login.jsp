@@ -1,9 +1,14 @@
+<security:authorize access="isAuthenticated()">
+    <c:redirect url="/"/>
+</security:authorize>
 <!DOCTYPE html>
 <html>
     <head>
         <title>Login</title>
     </head>
     <body>
+        <jsp:include page="header.jsp"></jsp:include>
+
         <c:if test="${param.error != null}">
             <p>Login failed.</p>
         </c:if>

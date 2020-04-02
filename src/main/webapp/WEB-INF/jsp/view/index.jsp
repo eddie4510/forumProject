@@ -32,6 +32,7 @@
                 -webkit-background-clip:text; 
                 -webkit-text-fill-color:transparent;
                 text-shadow: 1px 1px 1px #9AFF9A;
+
             }
             .poll{
                 margin-top: 30px;
@@ -48,9 +49,9 @@
                 poll
             </div>
             <nav>
-                <a href="<c:url value="/thread/view/lecture" />">LECTURE</a>
-            <a href="<c:url value="/thread/view/lab" />">LAB</a>
-            <a href="<c:url value="/thread/view/other" />">OTHER</a>
+                <a href="<c:url value="/thread/lecture" />">LECTURE</a>
+            <a href="<c:url value="/thread/lab" />">LAB</a>
+            <a href="<c:url value="/thread/other" />">OTHER</a>
         </nav>
     </body>
 </html>
