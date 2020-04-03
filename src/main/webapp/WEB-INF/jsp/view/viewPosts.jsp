@@ -12,7 +12,10 @@
 
         <ol>
             <c:forEach var="post" items="${posts}">
-                <li>${post.CONTENT}</li>
+                <li>
+                    ${post.CONTENT}
+                    
+                </li>
                 </c:forEach>
         </ol>
 
@@ -21,9 +24,11 @@
             <br/>
 
             <p style="color:red;">${errorMessage}</p>
-            <form:form method="POST" modelAttribute="postForm">
+            <form:form method="POST" enctype="multipart/form-data" modelAttribute="postForm">
                 <form:label path="content">Content</form:label><br/>
-                <form:textarea path="content" rows="5" cols="30" /><br/><br/>
+                <form:textarea path="content" rows="5" cols="30" /><br/>
+                <b>Attachments</b><br/>
+                <input type="file" name="attachments" multiple="multiple"/>
                 <input type="submit" value="Submit"/>
             </form:form>
 

@@ -30,6 +30,15 @@ CREATE TABLE posts(
     PRIMARY KEY(post_id)
 );
 
+CREATE TABLE attachment (
+        attach_id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),
+        filename VARCHAR(255) DEFAULT NULL,
+        content_type VARCHAR(255) DEFAULT NULL,
+        content BLOB DEFAULT NULL,
+        post_id INTEGER DEFAULT NULL,
+        PRIMARY KEY (attach_id),
+        FOREIGN KEY (post_id) REFERENCES posts(post_id)
+);
 
 CREATE TABLE poll(
     poll_id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),
@@ -44,6 +53,9 @@ CREATE TABLE pollChoice(
     PRIMARY KEY(choice_id),
     FOREIGN KEY (poll_id) REFERENCES poll(poll_id)
 );
+
+
+
 
 INSERT INTO users VALUES ('keith', '{noop}keithpw');
 INSERT INTO user_roles(username, role) VALUES ('keith', 'ROLE_USER');

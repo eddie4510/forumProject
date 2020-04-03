@@ -1,12 +1,19 @@
 package ouhk.comps380f.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 @Entity
 @Table(name = "POSTS")
@@ -20,7 +27,11 @@ public class PostEntry implements Serializable {
     private Integer threadId;
     private Integer THREAD_SEQ;
     private String CONTENT;
-
+    
+    @OneToMany(mappedBy="post", fetch=FetchType.EAGER, cascade=CascadeType.ALL,orphanRemoval=true)
+    @Fetch(FetchMode.SUBSELECT)
+    private List<AttachmentEntry> attachments=new ArrayList<>();
+    
     public PostEntry() {
     }
 
@@ -71,6 +82,19 @@ public class PostEntry implements Serializable {
 
     public void setCONTENT(String CONTENT) {
         this.CONTENT = CONTENT;
+    }
+
+    public List<AttachmentEntry> getAttachments() {
+        return attachments;
+    }
+
+    public void setAttachments(List<AttachmentEntry> attachments) {
+        this.attachments = attachments;
+    }
+    
+    public void deleteAttachment(AttachmentEntry attachment){
+        attachment.setPost(null);
+        this.attachments.remove(attachment);
     }
 
 }
