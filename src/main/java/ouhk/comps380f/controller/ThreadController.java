@@ -2,8 +2,11 @@ package ouhk.comps380f.controller;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Resource;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,12 +15,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.View;
+import org.springframework.web.servlet.view.RedirectView;
 import ouhk.comps380f.dao.AttachmentRepository;
 import ouhk.comps380f.dao.PostRepository;
 import ouhk.comps380f.dao.ThreadRepository;
 import ouhk.comps380f.model.AttachmentEntry;
 import ouhk.comps380f.model.PostEntry;
 import ouhk.comps380f.model.ThreadEntry;
+import ouhk.comps380f.view.DownloadingView;
 
 @Controller
 @RequestMapping("/thread")
@@ -35,6 +41,12 @@ public class ThreadController {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("viewThread");
         mav.addObject("threads", threadRepo.readEntriesByTYPE(type));
+        //find corresponding names by thread id
+        List<String> names = new ArrayList<>();
+        for (ThreadEntry thread : threadRepo.readEntriesByTYPE(type)) {
+            names.add(postRepo.readEntriesByThreadId(thread.getTHREAD_ID()).get(0).getUSERNAME());
+        }
+        mav.addObject("names", names);
         mav.addObject("type", type);
         mav.addObject("threadForm", new Form());
         return mav;
@@ -82,6 +94,12 @@ public class ThreadController {
         if (title.isEmpty() || content.isEmpty()) {
             mav.addObject("errorMessage", "Error: empty title/content");
             mav.addObject("threads", threadRepo.readEntriesByTYPE(type));
+            //find corresponding names by thread id
+            List<String> names = new ArrayList<>();
+            for (ThreadEntry thread : threadRepo.readEntriesByTYPE(type)) {
+                names.add(postRepo.readEntriesByThreadId(thread.getTHREAD_ID()).get(0).getUSERNAME());
+            }
+            mav.addObject("names", names);
             mav.addObject("type", type);
             mav.addObject("threadForm", new Form());
             return mav;
@@ -92,7 +110,6 @@ public class ThreadController {
         int threadId = (int) threadRepo.readEntriesByTYPE(type).get(threadRepo.readEntriesByTYPE(type).size() - 1).getTHREAD_ID();
         PostEntry post = new PostEntry(principal.getName(), threadId, 0, content);
 
-        
         for (MultipartFile filePart : form.getAttachments()) {
             AttachmentEntry attachment = new AttachmentEntry();
             attachment.setFILENAME(filePart.getOriginalFilename());
@@ -109,6 +126,12 @@ public class ThreadController {
         postRepo.save(post);
 
         mav.addObject("threads", threadRepo.readEntriesByTYPE(type));
+        //find corresponding names by thread id
+        List<String> names = new ArrayList<>();
+        for (ThreadEntry aThread : threadRepo.readEntriesByTYPE(type)) {
+            names.add(postRepo.readEntriesByThreadId(aThread.getTHREAD_ID()).get(0).getUSERNAME());
+        }
+        mav.addObject("names", names);
         mav.addObject("type", type);
         mav.addObject("threadForm", new Form());
 
@@ -167,7 +190,7 @@ public class ThreadController {
         }
         int nextPostSeq = postRepo.readEntriesByThreadId(threadId).size() + 1;
         PostEntry post = new PostEntry(principal.getName(), threadId, nextPostSeq, content);
-        
+
         for (MultipartFile filePart : form.getAttachments()) {
             AttachmentEntry attachment = new AttachmentEntry();
             attachment.setFILENAME(filePart.getOriginalFilename());
@@ -188,5 +211,14 @@ public class ThreadController {
         mav.addObject("title", title);
         mav.addObject("postForm", new PostForm());
         return mav;
+    }
+
+    @GetMapping("/attachment/{attachmentId:.+}")
+    public View download(@PathVariable("attachmentId") Integer attachmentId,
+            @PathVariable("threadId") Integer threadId,
+            @PathVariable("type") String type) {
+        AttachmentEntry attachment = attachmentRepo.findById(attachmentId).get();
+        return new DownloadingView(attachment.getFILENAME(), attachment.getCONTENT_TYPE(), attachment.getCONTENT());
+
     }
 }

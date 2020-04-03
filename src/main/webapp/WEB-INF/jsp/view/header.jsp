@@ -41,7 +41,7 @@
 </security:authorize>
 <c:set var="userName" value="${pageContext.request.userPrincipal.name}"/>
 <header>
-    <a href="/Forum/" ">HOME</a>
+    <a href="/Forum/ ">HOME</a>
 
     <c:if test="${userName != null}">
         <div class="user">

@@ -8,17 +8,20 @@
     </head>
     <body>
         <jsp:include page="header.jsp"></jsp:include>
-        <h1>Thread of ${type}</h1>
-        [THREAD_ID of the first thread: <c:out value="${threads[0].THREAD_ID}"/>]
+        <h1>Threads of ${type}</h1>
         <c:if test="${empty threads}">
             empty
         </c:if>
-        <ul>
-            <c:forEach var="thread" items="${threads}">
-                <li><a href="<c:url value="./${type}/${thread.THREAD_ID}" />">${thread.TITLE}</a></li>
+        <c:if test="${not empty threads}">
+            <ul>
+                <c:forEach var="i" begin="0" end="${fn:length(threads)-1}" step="1">
+                    <li>
+                        <a href="<c:url value="./${type}/${threads[i].THREAD_ID}" />">${threads[i].TITLE}</a>
+                        <div>${names[i]}</div>
+                    </li>
                 </c:forEach>
-        </ul>
-
+            </ul>
+        </c:if>
         <security:authorize access="isAuthenticated()">
             <br/>
 
@@ -29,8 +32,8 @@
                 <form:label path="content">Content</form:label><br/>
                 <form:textarea path="content" rows="5" cols="30" /><br/>
                 <form:label path="attachments">Attachments</form:label><br/>
-                <input type="file" name="attachments" multiple="multiple"/>
-                <input type="submit" value="Submit"/>
+                    <input type="file" name="attachments" multiple="multiple"/>
+                    <input type="submit" value="Submit"/>
             </form:form>
 
         </security:authorize>
