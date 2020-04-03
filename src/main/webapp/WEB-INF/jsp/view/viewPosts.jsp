@@ -27,7 +27,7 @@
             <form:form method="POST" enctype="multipart/form-data" modelAttribute="postForm">
                 <form:label path="content">Content</form:label><br/>
                 <form:textarea path="content" rows="5" cols="30" /><br/>
-                <b>Attachments</b><br/>
+                <form:label path="attachments">Attachments</form:label><br/>
                 <input type="file" name="attachments" multiple="multiple"/>
                 <input type="submit" value="Submit"/>
             </form:form>
