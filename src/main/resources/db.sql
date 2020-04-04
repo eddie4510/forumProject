@@ -54,7 +54,14 @@ CREATE TABLE pollChoice(
     FOREIGN KEY (poll_id) REFERENCES poll(poll_id)
 );
 
-
+CREATE TABLE votes(
+    vote_id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),
+    username VARCHAR(50) NOT NULL,
+    choice_id INTEGER NOT NULL,
+    PRIMARY KEY(vote_id),
+    FOREIGN KEY (username) REFERENCES users(username),
+    FOREIGN KEY (choice_id) REFERENCES pollChoice(choice_id)
+);
 
 
 INSERT INTO users VALUES ('abc', '{noop}abc');
