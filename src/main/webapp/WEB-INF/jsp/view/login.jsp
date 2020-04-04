@@ -10,7 +10,7 @@
         <jsp:include page="header.jsp"></jsp:include>
 
         <c:if test="${param.error != null}">
-            <p>Login failed.</p>
+            <p style="color:red;">Login failed.</p>
         </c:if>
         <c:if test="${param.logout != null}">
             <p>You have logged out.</p>

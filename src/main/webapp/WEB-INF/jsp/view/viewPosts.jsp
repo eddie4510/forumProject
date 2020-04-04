@@ -4,6 +4,36 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <style>
+            ol{
+                border:solid 1px;
+                padding:10px;
+                background-color:#fafffc;
+            }
+            li{
+                border-bottom: solid 1px;
+                border-top: solid 1px;
+                padding:20px;
+
+                margin:2px;
+                margin-left:30px;
+            }
+            .content{
+                display:block;
+                border:solid 1px;
+                border-radius: 2px;
+                background-color: #fcfaff;
+                padding:15px;
+            }
+            .name{
+                display:inline-block;
+            }
+            .delete{
+                display:inline-block;
+                float:right;
+            }
+
+        </style>
         <title>${title}</title>
     </head>
     <body>
@@ -11,11 +41,28 @@
         <h1>${title}</h1>
 
         <ol>
-            <c:forEach var="post" items="${posts}">
+            <c:forEach var="post" items="${posts}" varStatus="status">
                 <li>
-                    <div>${post.CONTENT}</div>
-                    <div>${post.USERNAME}</div>
+                    <div class="name">by ${post.USERNAME}</div>
+                    <security:authorize access="hasAnyAuthority('ROLE_ADMIN')" var="isAdmin">
+                        <c:if test="${status.first}">
+                            <div class="delete">
+                                <a href="<c:url value="/thread/delete/${type}/${post.threadId}" />">
+                                    [Delete Thread]
+                                </a>
+                            </div>
+                        </c:if>
+                        <c:if test="${!status.first}">
+                            <div class="delete">
+                                <a href="<c:url value="/thread/delete/${type}/${post.threadId}/${post.POST_ID}" />">
+                                    [Delete Post]
+                                </a>
+                            </div>
+                        </c:if>
+                    </security:authorize>
+                    <div class="content">${post.CONTENT}</div>
                     <c:if test="${fn:length(post.attachments) >0 }">
+                        <div>Attachment(s):</div>
                         <security:authorize access="isAnonymous()">
                             <div>Please login to see the attachments!</div>
                         </security:authorize>
@@ -29,15 +76,16 @@
                             </c:forEach>
                         </security:authorize>
                     </c:if>
-
-
                 </li>
             </c:forEach>
         </ol>
-
+        
+        
+        <security:authorize access="isAnonymous()">
+            <div>Please login to write your post!</div>
+        </security:authorize>
 
         <security:authorize access="isAuthenticated()">
-            <br/>
 
             <p style="color:red;">${errorMessage}</p>
             <form:form method="POST" enctype="multipart/form-data" modelAttribute="postForm">

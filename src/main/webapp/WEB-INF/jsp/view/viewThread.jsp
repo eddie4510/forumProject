@@ -4,24 +4,61 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <style>
+            ul{
+                border:solid 1px;
+                list-style-type: none;
+                padding:10px;
+                background-color:#fafffc;
+            }
+            li{
+                border-bottom: solid 1px;
+                border-top: solid 1px;
+                padding:20px;
+                margin:2px;
+            }
+            .title{
+                font-size: 20px;
+                display:inline-block;
+            }
+            .name{
+                display:inline-block;
+            }
+            .delete{
+                display:inline-block;
+                float:right;
+            }
+
+        </style>
         <title>${type}</title>
     </head>
     <body>
         <jsp:include page="header.jsp"></jsp:include>
         <h1>Threads of ${type}</h1>
         <c:if test="${empty threads}">
-            empty
+            Write the first message topic!
         </c:if>
         <c:if test="${not empty threads}">
             <ul>
                 <c:forEach var="i" begin="0" end="${fn:length(threads)-1}" step="1">
                     <li>
-                        <a href="<c:url value="./${type}/${threads[i].THREAD_ID}" />">${threads[i].TITLE}</a>
-                        <div>${names[i]}</div>
+                        <div class="title"><a href="<c:url value="./${type}/${threads[i].THREAD_ID}" />">${threads[i].TITLE}</a></div>
+                        <div class="name">by ${names[i]}</div>
+                        <security:authorize access="hasAnyAuthority('ROLE_ADMIN')" var="isAdmin">
+                            <div class="delete">                        
+                                <a href="<c:url value="/thread/delete/${type}/${threads[i].THREAD_ID}" />">
+                                    [Delete]
+                                </a>
+                            </div>
+                        </security:authorize>
                     </li>
                 </c:forEach>
             </ul>
         </c:if>
+
+        <security:authorize access="isAnonymous()">
+            <div>Please login to write your topic!</div>
+        </security:authorize>
         <security:authorize access="isAuthenticated()">
             <br/>
 

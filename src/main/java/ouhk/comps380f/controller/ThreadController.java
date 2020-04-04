@@ -213,12 +213,32 @@ public class ThreadController {
         return mav;
     }
 
+    @GetMapping("/delete/{type}/{threadId}")
+    public String DeleteThread(@PathVariable(value = "type") String type,
+            @PathVariable(value = "threadId") int threadId) {
+        //delete related posts
+        for(PostEntry aPost:postRepo.readEntriesByThreadId(threadId)){
+            postRepo.delete(aPost);
+        }
+        //delete thread
+        threadRepo.deleteById(threadId);
+        
+        return "redirect:/thread/"+type;
+    }
+
+    @GetMapping("/delete/{type}/{threadId}/{postId}")
+    public String DeletePost(@PathVariable(value = "type") String type,
+            @PathVariable(value = "threadId") int threadId,
+            @PathVariable(value = "postId") int postId) {
+        postRepo.deleteById(postId);
+
+        return "redirect:/thread/"+type+"/"+threadId;
+    }
+
     @GetMapping("/attachment/{attachmentId:.+}")
-    public View download(@PathVariable("attachmentId") Integer attachmentId,
-            @PathVariable("threadId") Integer threadId,
-            @PathVariable("type") String type) {
+    public View download(@PathVariable("attachmentId") Integer attachmentId) {
         AttachmentEntry attachment = attachmentRepo.findById(attachmentId).get();
         return new DownloadingView(attachment.getFILENAME(), attachment.getCONTENT_TYPE(), attachment.getCONTENT());
-
     }
+
 }

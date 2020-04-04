@@ -57,18 +57,9 @@ CREATE TABLE pollChoice(
 
 
 
-INSERT INTO users VALUES ('keith', '{noop}keithpw');
-INSERT INTO user_roles(username, role) VALUES ('keith', 'ROLE_USER');
-INSERT INTO user_roles(username, role) VALUES ('keith', 'ROLE_ADMIN');
+INSERT INTO users VALUES ('abc', '{noop}abc');
+INSERT INTO user_roles(username, role) VALUES ('abc', 'ROLE_USER');
+INSERT INTO user_roles(username, role) VALUES ('abc', 'ROLE_ADMIN');
 
-INSERT INTO users VALUES ('vanessa', '{noop}vanessapw');
-INSERT INTO user_roles(username, role) VALUES ('vanessa', 'ROLE_ADMIN');
-
-INSERT INTO users VALUES ('kevin', '{noop}kevinpw');
-INSERT INTO user_roles(username, role) VALUES ('kevin', 'ROLE_USER');
-
-INSERT INTO users VALUES ('oliver', '{noop}oliverpw');
-INSERT INTO user_roles(username, role) VALUES ('oliver', 'ROLE_USER');
-
-
-INSERT INTO threads(type, title) VALUES ('lecture', 'The first thread of lecture');
+INSERT INTO users VALUES ('abcd', '{noop}abcd');
+INSERT INTO user_roles(username, role) VALUES ('abcd', 'ROLE_USER');
