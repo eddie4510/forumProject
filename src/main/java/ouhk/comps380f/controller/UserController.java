@@ -49,8 +49,10 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ModelAndView register(Form form, ModelMap map) {
+    public ModelAndView register(Form form) {
         ModelAndView mav = new ModelAndView();
+        
+        //get name&pw from the form, then check if empty
         String username = form.getUsername();
         String password = form.getPassword();
         if (username.isEmpty()||password.isEmpty()) {
@@ -59,7 +61,7 @@ public class UserController {
             mav.addObject("userForm",new Form());
             return mav;
         }
-
+        //check name duplication
         for (UserEntry aUser : userRepo.findAll()) {
             if (aUser.getUSERNAME().equals(username)) {
                 mav.setViewName("register");
@@ -68,6 +70,7 @@ public class UserController {
                 return mav;
             }
         }
+        //insert records to db
         UserEntry user = new UserEntry(username, "{noop}" + password);
         UserRoleEntry role = new UserRoleEntry(username, "ROLE_USER");
 
