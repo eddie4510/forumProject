@@ -1,5 +1,4 @@
-
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -46,10 +45,14 @@
         <jsp:include page="header.jsp"></jsp:include>
 
             <div class="poll">
-                poll
+              
+            
+        <jsp:include page="poll.jsp"></jsp:include>
+             
+             
             </div>
             <nav>
-                <a href="<c:url value="/thread/lecture" />">LECTURE</a>
+            <a href="<c:url value="/thread/lecture" />">LECTURE</a>
             <a href="<c:url value="/thread/lab" />">LAB</a>
             <a href="<c:url value="/thread/other" />">OTHER</a>
         </nav>
