@@ -76,7 +76,7 @@ public class IndexController {
 
     }
     
-    @PostMapping({"", "/index"})
+    @PostMapping("/poll")
     public ModelAndView poll(Form form, Principal principal) {
         ModelAndView mav = new ModelAndView();
         String username = principal.getName();
