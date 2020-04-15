@@ -1,3 +1,4 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -5,19 +6,18 @@
     </head>
     <body>
             <p>Question:${question}</p>
+             <security:authorize access="isAnonymous()">
+                      ${welcome}!     
+             </security:authorize>
+             <security:authorize access="isAuthenticated()">
+              <form:form method="POST" enctype="multipart/form-data"
+                   modelAttribute="pollForm">
+            <form:radiobuttons path="pollChoice" items="${pollChoiceList}"/><br/>
+             <input type="submit" value="Vote"/>
+            </form:form>    
+             </security:authorize>
             
-           <form method="POST" modelAttribute="pollForm">
-                <input type="radio" id="test1" name="poll">
-                <label for="test1">${choiceone}</label><br/>
-                <input type="radio" id="test2" name="poll">
-                <label for="test2">${choicetwo}</label><br/>
-                <input type="radio" id="test3" name="poll">
-                <label for="test3">${choicethree}</label><br/>
-                 <input type="radio" id="test4" name="poll">
-                <label for="test4">${choicefour}</label><br/>
-               
-                
-                <input type="submit" value="Vote"/>
-            </form>
+        
     </body>
 </html>
+
