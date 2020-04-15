@@ -37,17 +37,17 @@
         font-size:15px;
     }
 </style>
-<security:authorize access="hasAnyAuthority('ROLE_ADMIN')" var="isAdmin">
-</security:authorize>
+<security:authorize access="hasAnyAuthority('ROLE_ADMIN')" var="isAdmin" />
 <c:set var="userName" value="${pageContext.request.userPrincipal.name}"/>
 <header>
     <a href="/Forum/ ">HOME</a>
 
     <c:if test="${userName != null}">
         <div class="user">
-            Hi ${userName}  <c:if test="${isAdmin}">[admin]</c:if>! 
-
-
+            Hi ${userName} !
+            <c:if test="${isAdmin}">[admin] 
+            <a href="<c:url value="/adminpage" />">Admin Page</a>
+            </c:if>
             <c:url var="logoutUrl" value="/logout"/>
             <form class="logoutForm" action="${logoutUrl}" method="post">
                 <input type="submit" value="Log out" />

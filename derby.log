@@ -1,0 +1,37 @@
+Wed Apr 01 17:40:50 CST 2020 : Apache Derby Network Server - 10.14.2.0 - (1828579) started and ready to accept connections on port 1527
+----------------------------------------------------------------
+Wed Apr 01 17:40:50 CST 2020:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0171-351d-62e7-0000270e05ef 
+on database directory C:\Users\BennyLam\Documents\NetBeansProjects\forumProject\forum with class loader sun.misc.Launcher$AppClassLoader@1d44bcfa 
+Loaded from file:/C:/Program%20Files/NetBeans-11.2/db-derby-10.14.2.0-bin/lib/derby.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.8.0_192-b12
+user.dir=C:\Program Files\NetBeans-11.2\db-derby-10.14.2.0-bin
+os.name=Windows 10
+os.arch=amd64
+os.version=10.0
+derby.system.home=C:\Users\BennyLam\Documents\NetBeansProjects\forumProject
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+Wed Apr 01 17:40:51 CST 2020:
+Shutting down instance a816c00e-0171-351d-62e7-0000270e05ef on database directory C:\Users\BennyLam\Documents\NetBeansProjects\forumProject\forum with class loader sun.misc.Launcher$AppClassLoader@1d44bcfa 
+Wed Apr 01 17:40:51 CST 2020 Thread[DRDAConnThread_3,5,main] (DATABASE = forum), (DRDAID = {2}), Database 'forum' shutdown.
+----------------------------------------------------------------
+Wed Apr 01 17:40:57 CST 2020:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance 6ede40af-0171-351d-62e7-0000270e05ef 
+on database directory C:\Users\BennyLam\Documents\NetBeansProjects\forumProject\forum with class loader sun.misc.Launcher$AppClassLoader@1d44bcfa 
+Loaded from file:/C:/Program%20Files/NetBeans-11.2/db-derby-10.14.2.0-bin/lib/derby.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.8.0_192-b12
+user.dir=C:\Program Files\NetBeans-11.2\db-derby-10.14.2.0-bin
+os.name=Windows 10
+os.arch=amd64
+os.version=10.0
+derby.system.home=C:\Users\BennyLam\Documents\NetBeansProjects\forumProject
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+Wed Apr 01 18:07:32 CST 2020: Shutting down Derby engine
+----------------------------------------------------------------
+Wed Apr 01 18:07:32 CST 2020:
+Shutting down instance 6ede40af-0171-351d-62e7-0000270e05ef on database directory C:\Users\BennyLam\Documents\NetBeansProjects\forumProject\forum with class loader sun.misc.Launcher$AppClassLoader@1d44bcfa 
+----------------------------------------------------------------

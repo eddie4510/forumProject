@@ -9,7 +9,7 @@ CREATE TABLE user_roles (
     username VARCHAR(50) NOT NULL,
     role VARCHAR(50) NOT NULL,
     PRIMARY KEY (user_role_id),
-    FOREIGN KEY (username) REFERENCES users(username)
+    FOREIGN KEY (username) REFERENCES users(username) ON DELETE CASCADE
 );
 
 CREATE TABLE threads(
