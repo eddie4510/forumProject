@@ -76,3 +76,4 @@ INSERT INTO pollchoice(choice, poll_id) VALUES ('mc1', 1);
 INSERT INTO pollchoice(choice, poll_id) VALUES ('mc2', 1);
 INSERT INTO pollchoice(choice, poll_id) VALUES ('mc3', 1);
 INSERT INTO pollchoice(choice, poll_id) VALUES ('mc4', 1);
+

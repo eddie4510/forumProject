@@ -35,25 +35,30 @@ public class IndexController {
         //return "redirect:/ticket/list";
         ModelAndView mav = new ModelAndView();
         
+        List<PollEntry> pollList = pollRepo.findAll();
+        int currentPollId = pollList.size();
+        
         //question
-        PollEntry apoll = pollRepo.findById(POLL_ID).orElse(null);
+        PollEntry apoll = pollRepo.findById(currentPollId).orElse(null);
         mav.addObject("question", apoll.getQUESTION());
         //poll choice
-        List<String> pollChoiceList = new ArrayList<String>();
-        pollChoiceList.add(pollChoiceRepo.findById(1).orElse(null).getChoice());
-        pollChoiceList.add(pollChoiceRepo.findById(2).orElse(null).getChoice());
-        pollChoiceList.add(pollChoiceRepo.findById(3).orElse(null).getChoice());
-        pollChoiceList.add(pollChoiceRepo.findById(4).orElse(null).getChoice());
+  
+        List<String> pollChoiceList = new ArrayList<>();
+        List<Long> resultList = new ArrayList<>();
+        for(PollChoiceEntry apollChoice : pollChoiceRepo.readEntriesByPollId(currentPollId)) {
+            pollChoiceList.add(apollChoice.getChoice());
+            int choiceId = apollChoice.getPollChoiceId();
+            resultList.add(voteRepo.countByChoiceId(choiceId));
+        }
+        
         mav.addObject("pollChoiceList", pollChoiceList);
       
          
         //Each Choice Result
-        List<Long> resultList = new ArrayList<>();
-        for(PollChoiceEntry apollchoice : pollChoiceRepo.findAll()) {
-            int choiceId = apollchoice.getPollChoiceId();
-            resultList.add(voteRepo.countByChoiceId(choiceId));
-        }
+
         
+        mav.addObject("voteList", voteRepo.findAll());
+        mav.addObject("currentPollId", currentPollId);
         mav.addObject("result", resultList);
         
         
@@ -96,6 +101,8 @@ public class IndexController {
         }
         
         }
+        
+        //check user vote
         VoteEntry vote = new VoteEntry(username,  choiceid);
         
         voteRepo.save(vote);

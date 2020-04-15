@@ -8,4 +8,6 @@ import ouhk.comps380f.model.PollEntry;
 
 public interface PollRepository extends JpaRepository<PollEntry, Integer>{
    
+
+    
 }
