@@ -46,9 +46,21 @@ public class IndexController {
         pollChoiceList.add(pollChoiceRepo.findById(4).orElse(null).getChoice());
         mav.addObject("pollChoiceList", pollChoiceList);
       
-        mav.addObject("welcome", "please login to vote the forum poll");
+         
+        //Each Choice Result
+        List<Long> resultList = new ArrayList<>();
+        for(PollChoiceEntry apollchoice : pollChoiceRepo.findAll()) {
+            int choiceId = apollchoice.getPollChoiceId();
+            resultList.add(voteRepo.countByChoiceId(choiceId));
+        }
+        
+        mav.addObject("result", resultList);
+        
+        
         
         mav.addObject("pollForm", new Form());
+        
+        
         
         mav.setViewName("index");
         return mav;

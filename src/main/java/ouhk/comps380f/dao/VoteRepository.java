@@ -7,4 +7,5 @@ import ouhk.comps380f.model.VoteEntry;
 
 public interface VoteRepository extends JpaRepository<VoteEntry, Integer>{
     
+    long countByChoiceId(int choiceId);
 }

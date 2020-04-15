@@ -19,14 +19,17 @@ public class VoteEntry implements Serializable{
     private int voteId;
     
     private String username;
-    private int Choice_ID;
+    @Column(name ="CHOICE_ID")
+    private int choiceId;
     
     public VoteEntry(){}
 
-    public VoteEntry(String username, int Choice_ID) {
+    public VoteEntry(String username, int choiceId) {
         this.username = username;
-        this.Choice_ID = Choice_ID;
+        this.choiceId = choiceId;
     }
+
+
 
     public int getVoteId() {
         return voteId;
@@ -44,13 +47,15 @@ public class VoteEntry implements Serializable{
         this.username = username;
     }
 
-    public int getChoice_ID() {
-        return Choice_ID;
+    public int getChoiceId() {
+        return choiceId;
     }
 
-    public void setChoice_ID(int Choice_ID) {
-        this.Choice_ID = Choice_ID;
+    public void setChoiceId(int choiceId) {
+        this.choiceId = choiceId;
     }
+
+
     
     
 }

@@ -7,7 +7,9 @@
     <body>
             <p>Question:${question}</p>
              <security:authorize access="isAnonymous()">
-                      ${welcome}!     
+                    ${pollChoiceList}<br/>
+                      ${result}!     
+
              </security:authorize>
              <security:authorize access="isAuthenticated()">
               <form:form method="POST" enctype="multipart/form-data"
