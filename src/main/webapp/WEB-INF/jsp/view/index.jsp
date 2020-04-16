@@ -42,7 +42,7 @@
     </head>
     <body>
         <jsp:include page="header.jsp"></jsp:include>
-
+        ${usernametest}
             <div class="poll">
               
             

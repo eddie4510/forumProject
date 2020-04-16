@@ -28,13 +28,17 @@
                 display:inline-block;
                 float:right;
             }
-
+            .numberofreplies{
+                display:inline-block;
+                margin-left: 30px;
+            }
         </style>
         <title>${type}</title>
     </head>
     <body>
         <jsp:include page="header.jsp"></jsp:include>
         <h1>Threads of ${type}</h1>
+        <h2>Number of Threads: ${fn:length(threads)}</h2>
         <c:if test="${empty threads}">
             Write the first message topic!
         </c:if>
@@ -44,6 +48,7 @@
                     <li>
                         <div class="title"><a href="<c:url value="./${type}/${threads[i].THREAD_ID}" />">${threads[i].TITLE}</a></div>
                         <div class="name">by ${names[i]}</div>
+                        <div class="numberofreplies"> Number of replies: ${numOfReplies[i]}</div>
                         <security:authorize access="hasAnyAuthority('ROLE_ADMIN')" var="isAdmin">
                             <div class="delete">                        
                                 <a href="<c:url value="/thread/delete/${type}/${threads[i].THREAD_ID}" />">

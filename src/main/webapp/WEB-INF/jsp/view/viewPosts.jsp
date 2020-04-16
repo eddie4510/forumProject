@@ -39,7 +39,7 @@
     <body>
         <jsp:include page="header.jsp"></jsp:include>
         <h1>${title}</h1>
-
+        <h2>Number of replies: ${fn:length(posts)}</h2>
         <ol>
             <c:forEach var="post" items="${posts}" varStatus="status">
                 <li>
