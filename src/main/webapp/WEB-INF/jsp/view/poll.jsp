@@ -35,7 +35,7 @@
         text-align: left;
         }
         .total{
-            margin-bottom: 20px;
+            display:inline-block;
              float:right;
         }
     </style>
@@ -66,7 +66,6 @@
                     </c:forEach>
                 </table>
                 <br/>
-                <div class="total">Total User Voted: ${total}</div>
             </security:authorize>
 
 
@@ -87,7 +86,6 @@
                             </c:forEach>
                         </table>
                         <br/>
-                         <div class="total">Total User Voted: ${total}</div>
                     </c:when>
                     <c:otherwise>
                         <form:form method="POST" enctype="multipart/form-data"
@@ -95,13 +93,13 @@
 
                             <form:radiobuttons path="pollChoice" items="${pollChoiceList}"/><br/><br/>
 
-                            <input type="submit" value="Vote"/>
+                            <input type="submit" value="Vote"/><br/>
                         </form:form>  
                     </c:otherwise>
                 </c:choose>
             </security:authorize>
+            <div class="total">Total User Voted: ${total}</div>
         </div>
-
 
     </body>
 </html>
