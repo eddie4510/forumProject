@@ -37,6 +37,15 @@ public class IndexController {
         int currentPollId = pollRepo.findAll().size();
 
         //question
+        
+         if (currentPollId == 0) {
+             Boolean noPoll = true;
+            mav.setViewName("index");
+            mav.addObject("noPoll", noPoll);
+            mav.addObject("noPollMessage", "No Any Poll Now");
+            return mav;
+        }
+        
         PollEntry apoll = pollRepo.findById(currentPollId).orElse(null);
         mav.addObject("question", apoll.getQUESTION());
         //poll choice

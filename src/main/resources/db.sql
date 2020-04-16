@@ -71,9 +71,4 @@ INSERT INTO user_roles(username, role) VALUES ('abc', 'ROLE_ADMIN');
 INSERT INTO users VALUES ('abcd', '{noop}abcd');
 INSERT INTO user_roles(username, role) VALUES ('abcd', 'ROLE_USER');
 
-INSERT INTO poll(question) VALUES ('question');
-INSERT INTO pollchoice(choice, poll_id) VALUES ('mc1', 1);
-INSERT INTO pollchoice(choice, poll_id) VALUES ('mc2', 1);
-INSERT INTO pollchoice(choice, poll_id) VALUES ('mc3', 1);
-INSERT INTO pollchoice(choice, poll_id) VALUES ('mc4', 1);
 

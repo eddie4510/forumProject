@@ -43,12 +43,16 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     </head>
     <body>
-        <security:authorize access="hasAnyAuthority('ROLE_ADMIN')" var="isAdmin">
+         <security:authorize access="hasAnyAuthority('ROLE_ADMIN')" var="isAdmin">
             <div class = "button">  <a href="<c:url value="/addPoll" />">Add a new poll</a></div>
-
+            
         </security:authorize>
-        <div class = "button"><a href="<c:url value="/pollHistory" />">History</a></div><br/>
-
+             <div class = "button"><a href="<c:url value="/pollHistory" />">History</a></div><br/>
+        <c:choose>
+            <c:when test="${noPoll}">
+                <div class="content"><p>${noPollMessage}</p></div>
+            </c:when>
+        <c:otherwise>
         <br/>
         <div class="content">
             <h2>Question:${question}</h2>
@@ -100,7 +104,8 @@
             </security:authorize>
             <div class="total">Total User Voted: ${total}</div>
         </div>
-
+            </c:otherwise>
+</c:choose>
     </body>
 </html>
 

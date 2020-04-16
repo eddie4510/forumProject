@@ -23,6 +23,11 @@
     <body>
          <jsp:include page="header.jsp"></jsp:include>
          <h1>Poll History</h1>
+         <c:choose>
+             <c:when test="${noPoll}">
+                 <p>${noPollMessage}</p>
+             </c:when>
+             <c:otherwise>
         <c:forEach var="i" begin="0" end="${fn:length(pollQuestion)-1}" step="1">
             <ul>
                 <h2>${pollQuestion[i].QUESTION}</h2>
@@ -38,5 +43,7 @@
                     </c:forEach>
             </ul>
          </c:forEach>
+        </c:otherwise>
+        </c:choose>
     </body>
 </html>

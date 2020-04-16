@@ -132,12 +132,25 @@ public class PollController {
     @GetMapping("/pollHistory")
     public ModelAndView pollHistory() {
         ModelAndView mav = new ModelAndView();
-        mav.setViewName("pollHistory");
+        
+        int currentPollId = pollRepo.findAll().size();
 
+        //question
+        
+         if (currentPollId == 0) {
+             Boolean noPoll = true;
+            mav.setViewName("pollHistory");
+            mav.addObject("noPoll", noPoll);
+            mav.addObject("noPollMessage", "No Any Poll Now");
+            return mav;
+        }
+        
+        mav.setViewName("pollHistory");
+        
         mav.addObject("pollQuestion", pollRepo.findAll());
         mav.addObject("pollChoice", pollChoiceRepo.findAll());
         mav.addObject("vote", voteRepo.findAll());
-
+        
         List<Long> voteCountList = new ArrayList<>();
         for (PollChoiceEntry apollchoice : pollChoiceRepo.findAll()) {
             int choiceId = apollchoice.getPollChoiceId();
