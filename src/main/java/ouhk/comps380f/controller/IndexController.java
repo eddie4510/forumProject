@@ -1,5 +1,6 @@
 package ouhk.comps380f.controller;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +31,7 @@ public class IndexController {
     private VoteRepository voteRepo;
 
     @GetMapping({"", "/index"})
-    public ModelAndView index() {
+    public ModelAndView index(Principal principal) throws IOException{
         //return "redirect:/ticket/list";
         ModelAndView mav = new ModelAndView();
         int currentPollId = pollRepo.findAll().size();
@@ -55,10 +56,33 @@ public class IndexController {
         mav.addObject("currentPollId", currentPollId);
         mav.addObject("result", resultList);
         
+        Boolean isVoted = false;
+        //check user voted or not
+        if(principal != null) {
+        for (VoteEntry avote : voteRepo.readEntriesByUsername(principal.getName())) {
+            for (PollChoiceEntry achoice : pollChoiceRepo.readEntriesByPollId(currentPollId)) {
+                if (avote.getChoiceId() == achoice.getPollChoiceId()) {
+                    isVoted = true;
+                }
+            }
+        }
+        }
         //number of user vote 
         int countTotal = 0;
         for(long result: resultList) {
             countTotal = countTotal + (int)result;
+        }
+       
+        if (isVoted) {
+            mav.setViewName("index");
+            mav.addObject("total", countTotal);
+            mav.addObject("question", apoll.getQUESTION());
+            mav.addObject("isVoted", isVoted);
+            mav.addObject("errorMessage", "Vote Success! Current Poll Result:");
+            mav.addObject("pollChoiceList", pollChoiceList);
+            mav.addObject("result", resultList);
+            mav.addObject("pollForm", new Form());
+            return mav;
         }
         mav.addObject("total", countTotal);
         
@@ -91,43 +115,6 @@ public class IndexController {
         int choiceid = 1;
         int currentPollId = pollRepo.findAll().size();
 
-        Boolean isVoted = false;
-        //check user voted or not
-        PollEntry apoll = pollRepo.findById(currentPollId).orElse(null);
-
-        List<String> pollChoiceList = new ArrayList<>();
-        List<Long> resultList = new ArrayList<>();
-        for (PollChoiceEntry apollChoice : pollChoiceRepo.readEntriesByPollId(currentPollId)) {
-            pollChoiceList.add(apollChoice.getChoice());
-            int choiceId = apollChoice.getPollChoiceId();
-            resultList.add(voteRepo.countByChoiceId(choiceId));
-        }
-
-        for (VoteEntry avote : voteRepo.readEntriesByUsername(principal.getName())) {
-            for (PollChoiceEntry achoice : pollChoiceRepo.readEntriesByPollId(currentPollId)) {
-                if (avote.getChoiceId() == achoice.getPollChoiceId()) {
-                    isVoted = true;
-                }
-            }
-        }
-        
-        //number of user vote 
-        int countTotal = 0;
-        for(long result: resultList) {
-            countTotal = countTotal + (int)result;
-        }
-        
-        if (isVoted) {
-            mav.setViewName("index");
-            mav.addObject("total", countTotal);
-            mav.addObject("question", apoll.getQUESTION());
-            mav.addObject("isVoted", isVoted);
-            mav.addObject("errorMessage", "You only can vote once! Current Poll Result:");
-            mav.addObject("pollChoiceList", pollChoiceList);
-            mav.addObject("result", resultList);
-            mav.addObject("pollForm", new Form());
-            return mav;
-        }
 
         //get choice id
         for (PollChoiceEntry apollChoice : pollChoiceRepo.findAll()) {
