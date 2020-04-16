@@ -24,8 +24,8 @@
             text-align:center;
         }
         table{
-            margin-top: 10px;
-            margin-bottom: 10px;
+            margin-top: 5px;
+            margin-bottom: 5px;
         }
         table, th, td {
          border: 1px solid black;
@@ -33,6 +33,10 @@
         }
         th {
         text-align: left;
+        }
+        .total{
+            margin-bottom: 20px;
+             float:right;
         }
     </style>
     <head>
@@ -61,6 +65,8 @@
                         </tr>
                     </c:forEach>
                 </table>
+                <br/>
+                <div class="total">Total User Voted: ${total}</div>
             </security:authorize>
 
 
@@ -80,6 +86,8 @@
                                 </tr>
                             </c:forEach>
                         </table>
+                        <br/>
+                         <div class="total">Total User Voted: ${total}</div>
                     </c:when>
                     <c:otherwise>
                         <form:form method="POST" enctype="multipart/form-data"

@@ -49,12 +49,19 @@ public class IndexController {
         }
 
         mav.addObject("pollChoiceList", pollChoiceList);
-
+        
         //Each Choice Result
         mav.addObject("voteList", voteRepo.findAll());
         mav.addObject("currentPollId", currentPollId);
         mav.addObject("result", resultList);
-
+        
+        //number of user vote 
+        int countTotal = 0;
+        for(long result: resultList) {
+            countTotal = countTotal + (int)result;
+        }
+        mav.addObject("total", countTotal);
+        
         mav.addObject("pollForm", new Form());
 
         mav.setViewName("index");
@@ -103,9 +110,16 @@ public class IndexController {
                 }
             }
         }
-
+        
+        //number of user vote 
+        int countTotal = 0;
+        for(long result: resultList) {
+            countTotal = countTotal + (int)result;
+        }
+        
         if (isVoted) {
             mav.setViewName("index");
+            mav.addObject("total", countTotal);
             mav.addObject("question", apoll.getQUESTION());
             mav.addObject("isVoted", isVoted);
             mav.addObject("errorMessage", "You only can vote once! Current Poll Result:");
@@ -126,9 +140,9 @@ public class IndexController {
         VoteEntry vote = new VoteEntry(username, choiceid);
 
         voteRepo.save(vote);
-
+        
+        
         mav.setViewName("redirect:/index");
-
         return mav;
 
     }

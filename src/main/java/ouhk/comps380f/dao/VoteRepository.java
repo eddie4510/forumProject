@@ -11,4 +11,6 @@ public interface VoteRepository extends JpaRepository<VoteEntry, Integer>{
     long countByChoiceId(int choiceId);
    
     List<VoteEntry> readEntriesByUsername(String usernname);
+    
+    List<VoteEntry> readEntriesByChoiceId(int choiceId);
 }
