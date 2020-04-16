@@ -1,4 +1,3 @@
-
 package ouhk.comps380f.controller;
 
 import java.util.ArrayList;
@@ -18,23 +17,22 @@ import ouhk.comps380f.model.PollChoiceEntry;
 import ouhk.comps380f.model.PollEntry;
 import ouhk.comps380f.model.VoteEntry;
 
-
 @Controller
 public class PollController {
-    
+
     @Resource
     private PollRepository pollRepo;
-   
+
     @Resource
     private PollChoiceRepository pollChoiceRepo;
-    
+
     @Resource
     private VoteRepository voteRepo;
-    
+
     private Map<Long, PollEntry> pollDatabase = new Hashtable<>();
     private Map<Long, PollChoiceEntry> pollChoiceDatabase = new Hashtable<>();
     private Map<Long, VoteEntry> voteDatabase = new Hashtable<>();
-    
+
     @GetMapping("/addPoll")
     public ModelAndView addPoll() {
         return new ModelAndView("addPoll", "addPollForm", new Form());
@@ -88,64 +86,66 @@ public class PollController {
             this.choiceFour = choiceFour;
         }
 
-
-        
     }
-    
-    @PostMapping("addPoll") 
+
+    @PostMapping("addPoll")
     public ModelAndView addPoll(Form form) {
         ModelAndView mav = new ModelAndView();
-        
+
         String question = form.getQuestion();
+
         String choiceOne = form.getChoiceOne();
         String choiceTwo = form.getChoiceTwo();
         String choiceThree = form.getChoiceThree();
         String choiceFour = form.getChoiceFour();
-        
+
         List<String> choiceList = new ArrayList<>();
-        choiceList.add(choiceOne);
-        choiceList.add(choiceTwo);
-        choiceList.add(choiceThree);
-        choiceList.add(choiceFour);
-        
-        List<PollEntry> pollList = pollRepo.findAll();
-        int currentPollId = pollList.size();
+        if (!choiceOne.isEmpty()) {
+            choiceList.add(choiceOne);
+        }
+        if (!choiceTwo.isEmpty()) {
+            choiceList.add(choiceTwo);
+        }
+        if (!choiceThree.isEmpty()) {
+            choiceList.add(choiceThree);
+        }
+        if (!choiceFour.isEmpty()) {
+            choiceList.add(choiceFour);
+        }
+
+        int currentPollId = pollRepo.findAll().size();
         currentPollId++;
-        
-       PollEntry poll = new PollEntry(question);
-       pollRepo.save(poll);
-       
-       for(String achoice : choiceList) {
-        PollChoiceEntry pollchoice = new PollChoiceEntry(achoice, currentPollId);
-        pollChoiceRepo.save(pollchoice);
-       }
- 
-        
-       
+
+        PollEntry poll = new PollEntry(question);
+        pollRepo.save(poll);
+
+        //check null input and save
+        for (String achoice : choiceList) {
+            PollChoiceEntry pollchoice = new PollChoiceEntry(achoice, currentPollId);
+            pollChoiceRepo.save(pollchoice);
+        }
+
         mav.setViewName("redirect:/index");
         return mav;
     }
-    
-    
+
     @GetMapping("/pollHistory")
     public ModelAndView pollHistory() {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("pollHistory");
-        
+
         mav.addObject("pollQuestion", pollRepo.findAll());
         mav.addObject("pollChoice", pollChoiceRepo.findAll());
         mav.addObject("vote", voteRepo.findAll());
-        
+
         List<Long> voteCountList = new ArrayList<>();
-        for(PollChoiceEntry apollchoice : pollChoiceRepo.findAll()) {
+        for (PollChoiceEntry apollchoice : pollChoiceRepo.findAll()) {
             int choiceId = apollchoice.getPollChoiceId();
             voteCountList.add(voteRepo.countByChoiceId(choiceId));
         }
-       
-        
-        
+
         mav.addObject("vote", voteCountList);
-        
+
         return mav;
     }
 }
