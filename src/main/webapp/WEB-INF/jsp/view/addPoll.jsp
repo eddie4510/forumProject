@@ -1,3 +1,4 @@
+ <security:authorize access="hasAnyAuthority('ROLE_ADMIN')">
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -33,3 +34,4 @@
         </form:form>
     </body>
 </html>
+ </security:authorize>
