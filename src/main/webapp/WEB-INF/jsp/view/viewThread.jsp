@@ -48,7 +48,6 @@
                     <li>
                         <div class="title"><a href="<c:url value="./${type}/${threads[i].THREAD_ID}" />">${threads[i].TITLE}</a></div>
                         <div class="name">by ${names[i]}</div>
-                        <div class="numberofreplies"> Number of replies: ${numOfReplies[i] -1}</div>
                         <security:authorize access="hasAnyAuthority('ROLE_ADMIN')" var="isAdmin">
                             <div class="delete">                        
                                 <a href="<c:url value="/thread/delete/${type}/${threads[i].THREAD_ID}" />">

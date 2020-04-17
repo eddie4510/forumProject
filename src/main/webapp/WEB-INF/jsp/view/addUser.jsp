@@ -19,6 +19,7 @@
                  <form:input type="text" path="password" /><br/><br/>
                  <form:label path="roles">Roles</form:label><br/>
                  <form:checkbox path="roles" value="ROLE_USER" checked="true" disabled="true"/>ROLE_USER
+                 <form:hidden path="roles" value="ROLE_USER"/>
                  <form:checkbox path="roles" value="ROLE_ADMIN" />ROLE_ADMIN
                  <br /><br />
                  <input type="submit" value="Add User"/>

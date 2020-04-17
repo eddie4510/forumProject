@@ -43,6 +43,7 @@
     <body>
         <jsp:include page="header.jsp"></jsp:include>
         <h1>User information</h1>
+        <h2>${testthreadid}</h2>
         <c:choose>
             <c:when test="${isAdmin}">
             <ul>

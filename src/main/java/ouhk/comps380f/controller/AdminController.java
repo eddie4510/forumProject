@@ -18,11 +18,17 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.RedirectView;
 
+import ouhk.comps380f.dao.AttachmentRepository;
+import ouhk.comps380f.dao.PostRepository;
+import ouhk.comps380f.dao.ThreadRepository;
 import ouhk.comps380f.dao.UserRepository;
 import ouhk.comps380f.dao.UserRoleRepository;
+
 import ouhk.comps380f.model.UserEntry;
 import ouhk.comps380f.model.UserRoleEntry;
-
+import ouhk.comps380f.model.AttachmentEntry;
+import ouhk.comps380f.model.PostEntry;
+import ouhk.comps380f.model.ThreadEntry;
 
 @Controller
 public class AdminController {
@@ -31,6 +37,12 @@ public class AdminController {
     private UserRepository userRepo;
     @Resource
     private UserRoleRepository roleRepo;
+    @Resource
+    private ThreadRepository threadRepo;
+    @Resource
+    private PostRepository postRepo;
+    @Resource
+    private AttachmentRepository attachmentRepo;
 
     @GetMapping("/adminpage")
     public ModelAndView viewUser() {
@@ -88,11 +100,8 @@ public class AdminController {
     public ModelAndView editUserInfo(@PathVariable(value = "usernames") String usernames) {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("editUserInfo");
-        List<String> userRole = new ArrayList<>();
         for (UserRoleEntry userrole : roleRepo.findByUSERNAME(usernames)) {
-            if(userrole.getROLE().equals("ROLE_USER")){
-                mav.addObject("role_userchecked", "checked");
-            }else if(userrole.getROLE().equals("ROLE_ADMIN")){
+            if(userrole.getROLE().equals("ROLE_ADMIN")){
                 mav.addObject("role_adminchecked", "checked");
             }
         }
@@ -100,6 +109,7 @@ public class AdminController {
         UserEntry user = userRepo.findByUSERNAME(usernames);
         String username = user.getUSERNAME();
         String pw =  user.getPASSWORD();
+        pw = pw.substring(6);
         mav.addObject("username", username);
         mav.addObject("pw", pw);
         
@@ -119,7 +129,7 @@ public class AdminController {
             return mav;
         }
         
-        UserEntry user = new UserEntry(form.getUsername(),form.getPassword());
+        UserEntry user = new UserEntry(form.getUsername(),"{noop}" +form.getPassword());
         userRepo.save(user);
 
         List<String> userRole = new ArrayList<>();
@@ -144,6 +154,23 @@ public class AdminController {
 
     @GetMapping("/delete/{usernames}")
     public View deleteUser(@PathVariable(value = "usernames") String usernames) {
+        int i;
+        for (PostEntry userpost : postRepo.readEntriesByUSERNAME(usernames)) {    
+            i = userpost.getThreadId();
+            threadRepo.deleteById(i);
+        }
+
+        /*for (int userthread : postRepo.readEntriesThreadID(usernames)) {    
+            threadRepo.deleteById(userthread);
+        }*/
+
+        for (PostEntry userpost : postRepo.readEntriesByUSERNAME(usernames)) {    
+            postRepo.delete(userpost);
+        }
+        
+        for (UserRoleEntry userrole : roleRepo.findByUSERNAME(usernames)) {
+            roleRepo.delete(userrole);
+        }
         UserEntry user = userRepo.findByUSERNAME(usernames);
         userRepo.delete(user);
         return new RedirectView("/adminpage", true);
