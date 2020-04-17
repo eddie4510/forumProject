@@ -137,7 +137,7 @@ public class ThreadController {
         List<Integer> numOfReplies = new ArrayList<>();
         for (ThreadEntry aThread : threadRepo.readEntriesByTYPE(type)) {
             names.add(postRepo.readEntriesByThreadId(aThread.getTHREAD_ID()).get(0).getUSERNAME());
-            numOfReplies.add(postRepo.readEntriesByThreadId(thread.getTHREAD_ID()).size());
+            numOfReplies.add(postRepo.readEntriesByThreadId(aThread.getTHREAD_ID()).size());
         }
         mav.addObject("names", names);
         mav.addObject("type", type);
