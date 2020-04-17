@@ -18,12 +18,13 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.RedirectView;
 
+import ouhk.comps380f.dao.VoteRepository;
 import ouhk.comps380f.dao.AttachmentRepository;
 import ouhk.comps380f.dao.PostRepository;
 import ouhk.comps380f.dao.ThreadRepository;
 import ouhk.comps380f.dao.UserRepository;
 import ouhk.comps380f.dao.UserRoleRepository;
-
+import ouhk.comps380f.model.VoteEntry;
 import ouhk.comps380f.model.UserEntry;
 import ouhk.comps380f.model.UserRoleEntry;
 import ouhk.comps380f.model.AttachmentEntry;
@@ -43,6 +44,8 @@ public class AdminController {
     private PostRepository postRepo;
     @Resource
     private AttachmentRepository attachmentRepo;
+    @Resource
+    private VoteRepository voteRepo;
 
     @GetMapping("/adminpage")
     public ModelAndView viewUser() {
@@ -154,23 +157,23 @@ public class AdminController {
 
     @GetMapping("/delete/{usernames}")
     public View deleteUser(@PathVariable(value = "usernames") String usernames) {
-        int i;
+        List<Integer> threadIds = new ArrayList<Integer>();
         for (PostEntry userpost : postRepo.readEntriesByUSERNAME(usernames)) {    
-            i = userpost.getThreadId();
-            threadRepo.deleteById(i);
-        }
-
-        /*for (int userthread : postRepo.readEntriesThreadID(usernames)) {    
-            threadRepo.deleteById(userthread);
-        }*/
-
-        for (PostEntry userpost : postRepo.readEntriesByUSERNAME(usernames)) {    
+            if(userpost.getTHREAD_SEQ() == 0){
+                threadIds.add(userpost.getThreadId());
+            }
             postRepo.delete(userpost);
         }
-        
+        for(Integer id : threadIds){
+            threadRepo.deleteById(id);
+        }
+        for(VoteEntry uservote : voteRepo.readEntriesByUsername(usernames)){
+            voteRepo.delete(uservote);
+        }
         for (UserRoleEntry userrole : roleRepo.findByUSERNAME(usernames)) {
             roleRepo.delete(userrole);
         }
+        
         UserEntry user = userRepo.findByUSERNAME(usernames);
         userRepo.delete(user);
         return new RedirectView("/adminpage", true);
