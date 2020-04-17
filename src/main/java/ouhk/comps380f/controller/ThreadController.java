@@ -107,6 +107,7 @@ public class ThreadController {
             mav.addObject("names", names);
             mav.addObject("type", type);
             mav.addObject("threadForm", new Form());
+            mav.addObject("numOfReplies", numOfReplies);
             return mav;
         }
 
@@ -133,13 +134,15 @@ public class ThreadController {
         mav.addObject("threads", threadRepo.readEntriesByTYPE(type));
         //find corresponding names by thread id
         List<String> names = new ArrayList<>();
+        List<Integer> numOfReplies = new ArrayList<>();
         for (ThreadEntry aThread : threadRepo.readEntriesByTYPE(type)) {
             names.add(postRepo.readEntriesByThreadId(aThread.getTHREAD_ID()).get(0).getUSERNAME());
+            numOfReplies.add(postRepo.readEntriesByThreadId(thread.getTHREAD_ID()).size());
         }
         mav.addObject("names", names);
         mav.addObject("type", type);
         mav.addObject("threadForm", new Form());
-
+        mav.addObject("numOfReplies", numOfReplies);
         return mav;
     }
 
