@@ -44,6 +44,7 @@
         <jsp:include page="header.jsp"></jsp:include>
         <h1>User information</h1>
         <h2>${testthreadid}</h2>
+        <c:set var="userName" value="${pageContext.request.userPrincipal.name}"/>
         <c:choose>
             <c:when test="${isAdmin}">
             <ul>
@@ -51,7 +52,9 @@
                     <li>
                         <div class="title">${usernames[i]}</div>
                         <div class="edit"><a href= "<c:url value="./edit/${usernames[i]}" />">[Edit]</a></div>
-                        <div class="delete"><a href="<c:url value="./delete/${usernames[i]}" />">[Delete]</a></div>
+                        <c:if test="${userName != usernames[i]}">
+                            <div class="delete"><a href="<c:url value="./delete/${usernames[i]}" />">[Delete]</a></div>
+                        </c:if>
                     </li>
                 </c:forEach>
                     <li><div class="create"><a href="<c:url value="./create" />">[Create User]</a></div></li>
