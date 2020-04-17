@@ -34,7 +34,7 @@
             }
             .poll{
                 margin-top: 30px;
-                border:solid;
+                border:solid 1px;
                 text-align:center;
             }
         </style>
@@ -42,7 +42,7 @@
     </head>
     <body>
         <jsp:include page="header.jsp"></jsp:include>
-        ${usernametest}
+
             <div class="poll">
               
             
