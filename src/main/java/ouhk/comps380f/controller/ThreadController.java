@@ -97,10 +97,12 @@ public class ThreadController {
         if (title.isEmpty() || content.isEmpty()) {
             mav.addObject("errorMessage", "Error: empty title/content");
             mav.addObject("threads", threadRepo.readEntriesByTYPE(type));
+            List<Integer> numOfReplies = new ArrayList<>();
             //find corresponding names by thread id
             List<String> names = new ArrayList<>();
             for (ThreadEntry thread : threadRepo.readEntriesByTYPE(type)) {
                 names.add(postRepo.readEntriesByThreadId(thread.getTHREAD_ID()).get(0).getUSERNAME());
+                numOfReplies.add(postRepo.readEntriesByThreadId(thread.getTHREAD_ID()).size());
             }
             mav.addObject("names", names);
             mav.addObject("type", type);
