@@ -20,7 +20,7 @@
                     <form:input type="password" path="password" value= "${pw}"/><br/><br/>
 
                     <form:label path="roles">Roles</form:label><br/>
-                    <form:checkbox path="roles" value="ROLE_USER" checked="${role_userchecked}"/>ROLE_USER
+                    <form:hidden path="roles" value="ROLE_USER"/>
                     <form:checkbox path="roles" value="ROLE_ADMIN" checked="${role_adminchecked}"/>ROLE_ADMIN
                     <br /><br />
 

@@ -119,7 +119,7 @@ public class AdminController {
             return mav;
         }
         
-        UserEntry user = new UserEntry(form.getUsername(),"{noop}" + form.getPassword());
+        UserEntry user = new UserEntry(form.getUsername(),form.getPassword());
         userRepo.save(user);
 
         List<String> userRole = new ArrayList<>();
